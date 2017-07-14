@@ -48,7 +48,7 @@ btnLevelDecrease : Player -> Html.Html Msg
 btnLevelDecrease player =
     let
         message =
-                            Msgs.ChangeLevel player -1
+          Msgs.ChangeLevel player -1
     in
         a [ class "btn ml1 h1", onClick message ]
             [ i [ class "fa fa-minus-circle" ] [] ]

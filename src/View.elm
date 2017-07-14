@@ -1,12 +1,16 @@
 module View exposing (..)
 
-import Html exposing (Html, div, text)
+import Html exposing (Html, div, text, form, input)
+import Html.Events exposing (onClick, onInput, onSubmit)
+import Html.Attributes as A
+import RemoteData
+
 import Models exposing (Model, PlayerId)
+import Routing exposing (playersPath)
 import Models exposing (Model)
 import Msgs exposing (Msg)
 import Players.Edit
 import Players.List
-import RemoteData
 
 
 view : Model -> Html Msg
@@ -59,10 +63,32 @@ playerEditPage model playerId =
 
 newPlayerPage : Model -> Html Msg
 newPlayerPage model =
-    div []
-        [ text "Test"
+    form [ onSubmit Msgs.AddNewPlayer]
+        [ input
+            [ A.type_ "text"
+            , A.placeholder "Player Name"
+            , onInput Msgs.AddNewPlayerName
+            ]
+            []
+        , input
+            [ A.type_ "text"
+            , A.placeholder "Player ID"
+            , onInput Msgs.AddNewPlayerId
+            ]
+            []
+        , input
+            [ A.type_ "text"
+            , A.placeholder "Player level"
+            , onInput stringToInt Msgs.AddNewPlayerLevel
+            ]
+            []
+        , input
+            [ A.type_ "submit" ]
+            []
         ]
 
+stringToInt =
+    
 
 notFoundView : Html msg
 notFoundView =

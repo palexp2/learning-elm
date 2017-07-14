@@ -12,4 +12,8 @@ type Msg
     | ChangeLevel Player Int
     | OnPlayerSave (Result Http.Error Player)
     | DeletePlayer PlayerId
+    | AddNewPlayer
+    | AddNewPlayerName String
+    | AddNewPlayerId PlayerId
+    | AddNewPlayerLevel Int
     

@@ -36,6 +36,19 @@ update msg model =
         Msgs.DeletePlayer idToDelete ->
            deletePlayer model idToDelete
 
+        AddNewPlayer players ->
+            addNewPlayer
+
+        AddNewPlayerName String player ->
+            updateTemporaryPlayer
+
+        AddNewPlayerId PlayerId player ->
+            updateTemporaryPlayer
+
+        AddNewPlayerLevel player ->
+            updateTemporaryPlayer
+
+
 updatePlayer : Model -> Player -> Model
 updatePlayer model updatedPlayer =
     let
@@ -68,4 +81,21 @@ deletePlayer model idToDelete =
 
         _ ->
             ( model, Cmd.none )
+
+addNewPlayer : Model -> PlayerId -> ( Model, Cmd Msg )
+addNewPlayer model newPlayerId = 
+    case model.player of
+        RemoteData.Sucess temporaryPlayer ->
+            let 
+                newmodel = { model |
+                    players = RemoteData.Success <|
+                        temporaryPlayer :: Players
+                
+                }
+            in 
+                ( newmodel, Cmd.none )
+
+        _ -> 
+            ( model, Cmd.none )
+
 

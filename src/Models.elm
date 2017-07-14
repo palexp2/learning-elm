@@ -26,6 +26,11 @@ type alias Player =
     , level : Int
     }
 
+type alias TemporaryPlayer =
+    { tmpId : PlayerId
+    , tmpName : String
+    , tmpLevel : Int
+    }
 
 type Route
     = PlayersRoute
