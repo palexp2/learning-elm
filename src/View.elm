@@ -79,7 +79,7 @@ newPlayerPage model =
         , input
             [ A.type_ "text"
             , A.placeholder "Player level"
-            , onInput stringToInt Msgs.AddNewPlayerLevel
+            , onInput stringToInt 
             ]
             []
         , input
@@ -87,10 +87,16 @@ newPlayerPage model =
             []
         ]
 
-stringToInt =
-    
+stringToInt : String -> Msg 
+stringToInt input =
+    String.toInt input
+        |> \result ->
+            case result of
+                Err msg -> Msgs.NoOp
 
-notFoundView : Html msg
+                Ok level -> Msgs.AddNewPlayerLevel level
+
+notFoundView : Html Msg
 notFoundView =
     div []
         [ text "Not found"

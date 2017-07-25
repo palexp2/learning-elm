@@ -1,7 +1,7 @@
 module Update exposing (..)
 
 import Commands exposing (savePlayerCmd)
-import Models exposing (Model, Player, PlayerId)
+import Models exposing (..)
 import Msgs exposing (Msg)
 import Routing exposing (parseLocation)
 import RemoteData
@@ -36,17 +36,20 @@ update msg model =
         Msgs.DeletePlayer idToDelete ->
            deletePlayer model idToDelete
 
-        AddNewPlayer players ->
-            addNewPlayer
+        Msgs.AddNewPlayer ->  --7
+            ( model, Cmd.none )   
+        
+        Msgs.AddNewPlayerName newPlayerName -> --8
+            ( updateTemporaryPlayerName model newPlayerName, Cmd.none )
 
-        AddNewPlayerName String player ->
-            updateTemporaryPlayer
+        Msgs.AddNewPlayerId newPlayerId -> --9
+            ( updateTemporaryPlayerId model newPlayerId, Cmd.none )
 
-        AddNewPlayerId PlayerId player ->
-            updateTemporaryPlayer
+        Msgs.AddNewPlayerLevel newPlayerLevel -> --10
+            ( updateTemporaryPlayerLevel model newPlayerLevel, Cmd.none )
 
-        AddNewPlayerLevel player ->
-            updateTemporaryPlayer
+        Msgs.NoOp ->
+            ( model, Cmd.none )
 
 
 updatePlayer : Model -> Player -> Model
@@ -82,20 +85,30 @@ deletePlayer model idToDelete =
         _ ->
             ( model, Cmd.none )
 
-addNewPlayer : Model -> PlayerId -> ( Model, Cmd Msg )
-addNewPlayer model newPlayerId = 
-    case model.player of
-        RemoteData.Sucess temporaryPlayer ->
-            let 
-                newmodel = { model |
-                    players = RemoteData.Success <|
-                        temporaryPlayer :: Players
-                
-                }
-            in 
-                ( newmodel, Cmd.none )
+updateTemporaryPlayerId : Model -> PlayerId -> Model
+updateTemporaryPlayerId model newPlayerId =
+    let
+        oldTempPlayer = model.temporaryPlayer
+        newTempPlayer = { oldTempPlayer | id = newPlayerId }
+    in
+        updateTempPlayer newTempPlayer model
 
-        _ -> 
-            ( model, Cmd.none )
+updateTemporaryPlayerName : Model -> PlayerName -> Model
+updateTemporaryPlayerName model newPlayerName =
+    let
+        oldTempPlayer = model.temporaryPlayer
+        newTempPlayer = { oldTempPlayer | name = newPlayerName }
+    in
+        updateTempPlayer newTempPlayer model
 
+updateTemporaryPlayerLevel : Model -> PlayerLevel -> Model
+updateTemporaryPlayerLevel model newPlayerLevel =
+    let
+        oldTempPlayer = model.temporaryPlayer
+        newTempPlayer = { oldTempPlayer | level = newPlayerLevel }
+    in
+        updateTempPlayer newTempPlayer model
 
+updateTempPlayer : Player -> Model -> Model
+updateTempPlayer newTempPlayer model =
+    { model | temporaryPlayer = newTempPlayer }

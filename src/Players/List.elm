@@ -5,7 +5,7 @@ import Html.Attributes exposing (class, href)
 import Models exposing (Player)
 import Msgs exposing (Msg)
 import RemoteData exposing (WebData)
-import Routing exposing (playerPath)
+import Routing exposing (playerPath, newPlayerPath)
 import Html.Events exposing (onClick)
 
 
@@ -24,10 +24,9 @@ nav =
         ]
         [ div [class "left h2 bold"] [ text "Players" ]
         , a 
-            [href "newplayer.elm" 
-            ]
+            [ href newPlayerPath ]
             [ i [ class "right p2 white fa fa-plus-circle" ] 
-                [text "  Add a player"]
+                [ text "  Add a player" ]
             ]
         ]
 
