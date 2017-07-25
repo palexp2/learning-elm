@@ -5,6 +5,7 @@ import Models exposing (..)
 import Msgs exposing (Msg)
 import Routing exposing (parseLocation)
 import RemoteData
+import List exposing (..)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -37,8 +38,8 @@ update msg model =
            deletePlayer model idToDelete
 
         Msgs.AddNewPlayer ->  --7
-            ( model, Cmd.none )   
-        
+            addNewPlayer model.temporaryPlayer model
+
         Msgs.AddNewPlayerName newPlayerName -> --8
             ( updateTemporaryPlayerName model newPlayerName, Cmd.none )
 
@@ -107,8 +108,24 @@ updateTemporaryPlayerLevel model newPlayerLevel =
         oldTempPlayer = model.temporaryPlayer
         newTempPlayer = { oldTempPlayer | level = newPlayerLevel }
     in
+    
         updateTempPlayer newTempPlayer model
 
 updateTempPlayer : Player -> Model -> Model
 updateTempPlayer newTempPlayer model =
     { model | temporaryPlayer = newTempPlayer }
+
+addNewPlayer : Player -> Model -> ( Model, Cmd Msg )
+addNewPlayer temporaryPlayer model =
+    case model.players of
+        RemoteData.Success players ->
+            let
+                newmodel = { model |
+                    players = RemoteData.Success <|
+                        temporaryPlayer :: players 
+                }
+            in
+                ( newmodel, Cmd.none )
+        _->
+            ( model, Cmd.none )
+
