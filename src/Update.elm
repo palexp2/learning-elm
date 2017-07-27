@@ -1,6 +1,6 @@
 module Update exposing (..)
 
-import Commands exposing (savePlayerCmd)
+import Commands exposing (savePlayerCmd, saveNewPlayerCmd, deletePlayerCmd)
 import Models exposing (..)
 import Msgs exposing (Msg)
 import Routing exposing (parseLocation)
@@ -37,21 +37,20 @@ update msg model =
         Msgs.DeletePlayer idToDelete ->
            deletePlayer model idToDelete
 
-        Msgs.AddNewPlayer ->  --7
-            addNewPlayer model.temporaryPlayer model
+        Msgs.AddNewPlayer  ->  
+             addNewPlayer model.temporaryPlayer model
 
-        Msgs.AddNewPlayerName newPlayerName -> --8
+        Msgs.AddNewPlayerName newPlayerName -> 
             ( updateTemporaryPlayerName model newPlayerName, Cmd.none )
 
-        Msgs.AddNewPlayerId newPlayerId -> --9
+        Msgs.AddNewPlayerId newPlayerId -> 
             ( updateTemporaryPlayerId model newPlayerId, Cmd.none )
 
-        Msgs.AddNewPlayerLevel newPlayerLevel -> --10
+        Msgs.AddNewPlayerLevel newPlayerLevel -> 
             ( updateTemporaryPlayerLevel model newPlayerLevel, Cmd.none )
 
         Msgs.NoOp ->
             ( model, Cmd.none )
-
 
 updatePlayer : Model -> Player -> Model
 updatePlayer model updatedPlayer =
@@ -70,7 +69,6 @@ updatePlayer model updatedPlayer =
     in
         { model | players = updatedPlayers }
 
-
 deletePlayer : Model -> PlayerId -> ( Model, Cmd Msg )
 deletePlayer model idToDelete =
     case model.players of
@@ -81,7 +79,7 @@ deletePlayer model idToDelete =
                         List.filter (\p -> p.id /= idToDelete) players
                 }
             in
-                ( newmodel, Cmd.none )
+                ( newmodel, deletePlayerCmd idToDelete ) 
 
         _ ->
             ( model, Cmd.none )
@@ -122,10 +120,10 @@ addNewPlayer temporaryPlayer model =
             let
                 newmodel = { model |
                     players = RemoteData.Success <|
-                        temporaryPlayer :: players 
+                       append players [temporaryPlayer]
                 }
             in
-                ( newmodel, Cmd.none )
+                ( newmodel, saveNewPlayerCmd temporaryPlayer )
         _->
             ( model, Cmd.none )
 

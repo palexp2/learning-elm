@@ -5,12 +5,13 @@ import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes as A
 import RemoteData
 
-import Models exposing (Model, PlayerId)
+import Models exposing (Model, PlayerId, Player)
 import Routing exposing (playersPath)
 import Models exposing (Model)
 import Msgs exposing (Msg)
 import Players.Edit
 import Players.List
+import Players.Add
 
 
 view : Model -> Html Msg
@@ -63,7 +64,7 @@ playerEditPage model playerId =
 
 newPlayerPage : Model -> Html Msg
 newPlayerPage model =
-    form [ onSubmit Msgs.AddNewPlayer]
+    form [ onSubmit Msgs.AddNewPlayer ] 
         [ input
             [ A.type_ "text"
             , A.placeholder "Player Name"

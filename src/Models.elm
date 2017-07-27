@@ -9,14 +9,12 @@ type alias Model =
     , temporaryPlayer : Player
     }
 
-
 initialModel : Route -> Model
 initialModel route =
     { players = RemoteData.Loading
     , route = route
     , temporaryPlayer = Player "" "" 0
     }
-
 
 type alias PlayerId =
     String
@@ -27,11 +25,10 @@ type alias PlayerName =
 type alias PlayerLevel =
     Int
 
-
 type alias Player =
     { id : PlayerId
-    , name : String
-    , level : Int
+    , name : PlayerName
+    , level : PlayerLevel
     }
 
 type Route
