@@ -17,4 +17,5 @@ type Msg
     | AddNewPlayerId PlayerId
     | AddNewPlayerLevel PlayerLevel
     | NoOp
+    | AcknowledgeDialog
     

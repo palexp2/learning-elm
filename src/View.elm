@@ -1,9 +1,10 @@
 module View exposing (..)
 
-import Html exposing (Html, div, text, form, input)
+import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Html.Attributes as A
 import RemoteData
+import Dialog
 
 import Models exposing (Model, PlayerId, Player)
 import Routing exposing (playersPath)
@@ -12,12 +13,20 @@ import Msgs exposing (Msg)
 import Players.Edit
 import Players.List
 import Players.Add
+import Utils exposing (..)
 
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ page model ]
+    div [ A.style [ ( "margin", "45px" ) ]] 
+        [ Dialog.view
+            (if model.showDialog then
+                Just (dialogConfig model)
+             else
+                Nothing
+            )
+        , page model
+        ]
 
 
 page : Model -> Html Msg
@@ -30,7 +39,7 @@ page model =
             playerEditPage model id
 
         Models.NewPlayerRoute ->
-            newPlayerPage model
+            Players.Add.view model
 
         Models.NotFoundRoute ->
             notFoundView
@@ -102,3 +111,21 @@ notFoundView =
     div []
         [ text "Not found"
         ]
+
+dialogConfig : Model -> Dialog.Config Msg
+dialogConfig model =
+    { closeMessage = Nothing
+    , containerClass = Nothing
+    , header = Just (h3 [] [ text "Error" ])
+    , body = Just (text ("This ID is already taken, please choose another one"))
+    , footer =
+        Just
+            (a 
+                [ A.class "fa fa-check"
+                , onClick Msgs.AcknowledgeDialog
+                ]
+                [text "ok"
+                ]
+            )
+    }
+

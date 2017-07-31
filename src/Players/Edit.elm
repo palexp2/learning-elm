@@ -71,3 +71,4 @@ listBtn =
         , href playersPath
         ]
         [ i [ class "fa fa-chevron-left mr1" ] [], text "List" ]
+

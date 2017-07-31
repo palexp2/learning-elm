@@ -25,7 +25,6 @@ playerUrl playerId =
     "http://localhost:4000/players/" ++ playerId
 
 
-
 savePlayerRequest : Player -> Http.Request Player
 savePlayerRequest player =
     Http.request

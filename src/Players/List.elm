@@ -1,7 +1,7 @@
 module Players.List exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, href, style, align)
 import Models exposing (Player)
 import Msgs exposing (Msg)
 import RemoteData exposing (WebData)
@@ -48,7 +48,7 @@ maybeList response =
 
 list : List Player -> Html Msg
 list players =
-    div []
+    div [ align "center" ]
         [ table []
             [ thead []
                 [ tr []
@@ -65,10 +65,10 @@ list players =
 
 playerRow : Player -> Html Msg
 playerRow player =
-    tr []
+    tr [ align  "center" ]
         [ td [] [ text player.id ]
         , td [] [ text player.name ]
-        , td [ class "center" ] [ text (toString player.level) ]
+        , td [] [ text (toString player.level) ]
         , td [] [ editBtn player
         , deleteBtn player]
         ]

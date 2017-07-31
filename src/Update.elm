@@ -32,7 +32,7 @@ update msg model =
             ( updatePlayer model player, Cmd.none )
 
         Msgs.OnPlayerSave (Err error) ->
-            ( model, Cmd.none )
+            ( { model | showDialog = True }, Cmd.none )
 
         Msgs.DeletePlayer idToDelete ->
            deletePlayer model idToDelete
@@ -51,6 +51,11 @@ update msg model =
 
         Msgs.NoOp ->
             ( model, Cmd.none )
+
+        Msgs.AcknowledgeDialog ->
+            ( { model | showDialog = False }
+            , Cmd.none
+            )
 
 updatePlayer : Model -> Player -> Model
 updatePlayer model updatedPlayer =
@@ -126,4 +131,5 @@ addNewPlayer temporaryPlayer model =
                 ( newmodel, saveNewPlayerCmd temporaryPlayer )
         _->
             ( model, Cmd.none )
+
 
