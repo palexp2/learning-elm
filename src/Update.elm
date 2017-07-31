@@ -32,13 +32,19 @@ update msg model =
             ( updatePlayer model player, Cmd.none )
 
         Msgs.OnPlayerSave (Err error) ->
+            ( model, Cmd.none )
+
+        Msgs.OnNewPlayerSave (Ok temporaryplayer) ->
+            ( updateNewPlayer temporaryplayer model , Cmd.none )
+
+        Msgs.OnNewPlayerSave (Err error) ->
             ( { model | showDialog = True }, Cmd.none )
 
         Msgs.DeletePlayer idToDelete ->
            deletePlayer model idToDelete
 
-        Msgs.AddNewPlayer  ->  
-             addNewPlayer model.temporaryPlayer model
+        Msgs.AddNewPlayer ->  
+             ( model, saveNewPlayerCmd model.temporaryPlayer )
 
         Msgs.AddNewPlayerName newPlayerName -> 
             ( updateTemporaryPlayerName model newPlayerName, Cmd.none )
@@ -118,8 +124,8 @@ updateTempPlayer : Player -> Model -> Model
 updateTempPlayer newTempPlayer model =
     { model | temporaryPlayer = newTempPlayer }
 
-addNewPlayer : Player -> Model -> ( Model, Cmd Msg )
-addNewPlayer temporaryPlayer model =
+updateNewPlayer : Player -> Model -> Model
+updateNewPlayer temporaryPlayer model =
     case model.players of
         RemoteData.Success players ->
             let
@@ -128,8 +134,8 @@ addNewPlayer temporaryPlayer model =
                        append players [temporaryPlayer]
                 }
             in
-                ( newmodel, saveNewPlayerCmd temporaryPlayer )
+                newmodel
         _->
-            ( model, Cmd.none )
+            model
 
 

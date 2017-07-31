@@ -58,7 +58,7 @@ saveNewPlayerRequest player =
 saveNewPlayerCmd : Player -> Cmd Msg
 saveNewPlayerCmd player =
     saveNewPlayerRequest player
-        |> Http.send Msgs.OnPlayerSave
+        |> Http.send Msgs.OnNewPlayerSave
 
 
 deletePlayerRequest : PlayerId -> Http.Request PlayerId
