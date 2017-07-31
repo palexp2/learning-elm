@@ -19,7 +19,8 @@ import Utils exposing (..)
 view : Model -> Html Msg
 view model =
     div [ A.style [ ( "margin", "45px" ) ]] 
-        [ Dialog.view
+        [ bootstrap
+        , Dialog.view
             (if model.showDialog then
                 Just (dialogConfig model)
              else

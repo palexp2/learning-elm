@@ -44,7 +44,7 @@ update msg model =
            deletePlayer model idToDelete
 
         Msgs.AddNewPlayer ->  
-             ( model, saveNewPlayerCmd model.temporaryPlayer )
+             ( clearForm model, saveNewPlayerCmd model.temporaryPlayer )
 
         Msgs.AddNewPlayerName newPlayerName -> 
             ( updateTemporaryPlayerName model newPlayerName, Cmd.none )
@@ -137,5 +137,14 @@ updateNewPlayer temporaryPlayer model =
                 newmodel
         _->
             model
+            
+
+clearForm : Model -> Model
+clearForm model =
+    let emptyPlayer =
+        Player "" "" 0
+    in
+     { model | temporaryPlayer = emptyPlayer }
+        
 
 

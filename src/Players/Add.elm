@@ -9,39 +9,47 @@ import Routing exposing (playerPath, newPlayerPath)
 import Html.Events exposing (onClick, onSubmit, onInput)
 import Html.Attributes as A
 import Routing exposing (playersPath)
+import Utils exposing (..)
 
 
 view : Model -> Html Msg
 view model =
     div [ ]
         [ nav
-        , newPlayerPage model
+        , newPlayerPage model.temporaryPlayer model
         ]
 
-newPlayerPage : Model -> Html Msg
-newPlayerPage model =
-   i [ A.class "center"]
-     [ form [ onSubmit Msgs.AddNewPlayer ] 
+newPlayerPage : Player -> Model -> Html Msg
+newPlayerPage temporaryPlayer model =
+   i [ A.class "center" ]
+     [  bootstrap
+        ,form [ onSubmit Msgs.AddNewPlayer ] 
         [ input
             [ A.type_ "text"
             , A.placeholder "Player Name"
             , onInput Msgs.AddNewPlayerName
+            , A.value temporaryPlayer.name
             ]
             []
         , input
             [ A.type_ "text"
             , A.placeholder "Player ID"
             , onInput Msgs.AddNewPlayerId
+            , A.value temporaryPlayer.id
             ]
             []
         , input
             [ A.type_ "text"
             , A.placeholder "Player level"
             , onInput stringToInt 
+            , A.value <| if (temporaryPlayer.level == 0) then
+                "" else toString temporaryPlayer.level 
             ]
             []
         , input
-            [ A.type_ "submit" ]
+            [ A.type_ "submit"
+            , A.value "Add player"
+            , A.class "btn btn-success"]
             []
         ]
         ]
